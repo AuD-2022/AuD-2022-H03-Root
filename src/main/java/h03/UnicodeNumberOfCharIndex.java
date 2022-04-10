@@ -17,8 +17,8 @@ public class UnicodeNumberOfCharIndex implements FunctionToInt<Character> {
     /**
      * Returns the Unicode of the given character.
      *
-     * @param character                 The character to be converted.
-     * @return                          The Unicode value of the given character.
+     * @param character The character to be converted.
+     * @return The Unicode value of the given character.
      * @throws IllegalArgumentException Will not be thrown.
      */
     @Override

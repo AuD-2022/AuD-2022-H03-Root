@@ -26,8 +26,8 @@ public class StringMatcher<T> {
     /**
      * Finds and returns all indices at which an occurrence of the search string (pre-processed with the update values object) starts in the given source.
      *
-     * @param source    The source string to search through.
-     * @return          The list of calculated indices.
+     * @param source The source string to search through.
+     * @return The list of calculated indices.
      */
     public List<Integer> findAllMatches(T[] source) {
         //Current state
@@ -36,14 +36,17 @@ public class StringMatcher<T> {
         final int SEARCH_STRING_LENGTH = VALUES.getSearchStringLength();
         List<Integer> result = new LinkedList<>();
         //Iterate over all elements in source
-        for(int i = 0; i < source.length; i ++) {
+        for (int i = 0; i < source.length; i++) {
             //Update to next state (depends on current state and current element in source)
             state = VALUES.getPartialMatchLengthUpdate(state, source[i]);
             //Has a match been found?
-            if(state == SEARCH_STRING_LENGTH)
+            if (state == SEARCH_STRING_LENGTH)
                 //If so - add the index of the beginning of found match to result
-                if(SEARCH_STRING_LENGTH != 0)
+            {
+                if (SEARCH_STRING_LENGTH != 0) {
                     result.add(i + 1 - SEARCH_STRING_LENGTH + 1);
+                }
+            }
         }
         return result;
     }

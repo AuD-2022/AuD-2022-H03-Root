@@ -5,7 +5,7 @@ package h03;
  *
  * @param <T> The type of the given Enum.
  */
-public class EnumIndex<T extends Enum<T>> implements FunctionToInt<T>{
+public class EnumIndex<T extends Enum<T>> implements FunctionToInt<T> {
     /**
      * The constants of the enum to be saved by this object.
      */
@@ -31,9 +31,9 @@ public class EnumIndex<T extends Enum<T>> implements FunctionToInt<T>{
     /**
      * Returns the index of the given constant in the enum represented by the alphabet.
      *
-     * @param t                             The given parameter to be used.
-     * @return                              The index of the given parameter.
-     * @throws IllegalArgumentException     Will never be thrown.
+     * @param t The given parameter to be used.
+     * @return The index of the given parameter.
+     * @throws IllegalArgumentException Will never be thrown.
      */
     @Override
     public int apply(T t) throws IllegalArgumentException {

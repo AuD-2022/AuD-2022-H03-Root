@@ -17,10 +17,10 @@ public interface FunctionToInt<T> {
     /**
      * Applies the given function to the given parameter t. This is deterministic.
      *
-     * @param t                             The given parameter to be used.
-     * @return                              The result of the function applied on the given parameter t.
-     *                                      The result is always >= 0 and < sizeOfAlphabet or the Exception.
-     * @throws IllegalArgumentException     If the parameter given for t is invalid for the used function.
+     * @param t The given parameter to be used.
+     * @return The result of the function applied on the given parameter t.
+     * The result is always >= 0 and < sizeOfAlphabet or the Exception.
+     * @throws IllegalArgumentException If the parameter given for t is invalid for the used function.
      */
     int apply(T t) throws IllegalArgumentException;
 }
