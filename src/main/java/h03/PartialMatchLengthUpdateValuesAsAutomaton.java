@@ -117,8 +117,7 @@ public class PartialMatchLengthUpdateValuesAsAutomaton<T> extends PartialMatchLe
                 }
             }
 
-            //Cleanup necessary due to an error in the algorithm above which I can not find/do not want to invest any more time into.
-            //Sometimes there were Transition-objects with empty letter-attribute which are obviously not intended.
+            //Remove transitions with empty letters-list
             for (int i = 0; i < theStates[state].size(); i++) {
                 if (theStates[state].get(i).LETTERS != null && theStates[state].get(i).LETTERS.size() == 0) {
                     theStates[state].remove(i);
