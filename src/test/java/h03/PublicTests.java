@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import static h03.MD5Assert.assertMd5Matches;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ public class PublicTests {
     enum Alpha {
         A, B, C, D;
 
-        public static Alpha[] toSearchString(String s) {
+        public static Alpha[] makeString(String s) {
             return s.chars()
                 .mapToObj(c -> String.valueOf((char) c))
                 .map(Alpha::valueOf)
@@ -93,10 +94,10 @@ public class PublicTests {
 
         @Test
         void testComputePartialMatchLengthUpdateValues() {
-            var searchString = Alpha.toSearchString("ABBABBA");
+            var searchString = Alpha.makeString("ABBABBA");
             assertEquals(4, computePartialMatchLengthUpdateValues(searchString));
 
-            searchString = Alpha.toSearchString("DADA");
+            searchString = Alpha.makeString("DADA");
             assertEquals(2, computePartialMatchLengthUpdateValues(searchString));
         }
 
@@ -115,7 +116,7 @@ public class PublicTests {
     class PartialMatchLengthUpdateValuesAsMatrixTest {
 
         private final PartialMatchLengthUpdateValuesAsMatrix<Alpha> matrix
-            = new PartialMatchLengthUpdateValuesAsMatrix<>(index, Alpha.toSearchString("AABBCCDD"));
+            = new PartialMatchLengthUpdateValuesAsMatrix<>(index, Alpha.makeString("AABBCCDD"));
 
         @Test
         void testGetPartialMatchLengthUpdate() {
@@ -133,7 +134,7 @@ public class PublicTests {
     class PartialMatchLengthUpdateValuesAsAutomatonTest {
 
         private final PartialMatchLengthUpdateValuesAsAutomaton<Alpha> matrix
-            = new PartialMatchLengthUpdateValuesAsAutomaton<>(index, Alpha.toSearchString("AABBCCDD"));
+            = new PartialMatchLengthUpdateValuesAsAutomaton<>(index, Alpha.makeString("AABBCCDD"));
 
         @Test
         void testGetPartialMatchLengthUpdate() {
@@ -144,6 +145,28 @@ public class PublicTests {
         @Test
         void testGetSearchStringLength() {
             assertEquals(8, matrix.getSearchStringLength());
+        }
+    }
+
+    @Nested
+    class StringMatcherTest {
+
+        private final StringMatcher<Alpha> matcher;
+
+        StringMatcherTest() {
+            var matrix = new PartialMatchLengthUpdateValuesAsAutomaton<>(index, Alpha.makeString("BAB"));
+            matcher = new StringMatcher<>(matrix);
+        }
+
+
+        @Test
+        void testGetPartialMatchLengthUpdate() {
+            var haystack = Alpha.makeString("BABBABABAABAB");
+            var matches = matcher.findAllMatches(haystack);
+
+            assertIterableEquals(
+                List.of(1, 4, 6, 11),
+                matches);
         }
     }
 }
