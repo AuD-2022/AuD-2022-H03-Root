@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PublicTests {
 
+    enum Alpha { A, B, C, D }
+
     @Nested
     class UnicodeNumberOfCharIndexTest {
 
@@ -47,6 +49,22 @@ public class PublicTests {
         @Test
         void testApply() {
             assertEquals(1, index.apply('B'));
+        }
+
+        @Test
+        void testSizeOfAlphabet() {
+            assertEquals( 4, index.sizeOfAlphabet());
+        }
+    }
+
+    @Nested
+    class EnumIndexTest {
+
+        private final EnumIndex<Alpha> index = new EnumIndex<>(Alpha.class);
+
+        @Test
+        void testApply() {
+            assertEquals(1, index.apply(Alpha.B));
         }
 
         @Test
