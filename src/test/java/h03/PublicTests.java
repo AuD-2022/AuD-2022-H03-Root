@@ -60,6 +60,7 @@ public class PublicTests {
         @Test
         void testApply() {
             assertEquals(1, index.apply('B'));
+            assertEquals(3, index.apply('D'));
         }
 
         @Test
@@ -74,6 +75,7 @@ public class PublicTests {
         @Test
         void testApply() {
             assertEquals(1, index.apply(Alpha.B));
+            assertEquals(3, index.apply(Alpha.D));
         }
 
         @Test
@@ -93,6 +95,9 @@ public class PublicTests {
         void testComputePartialMatchLengthUpdateValues() {
             var searchString = Alpha.toSearchString("ABBABBA");
             assertEquals(4, computePartialMatchLengthUpdateValues(searchString));
+
+            searchString = Alpha.toSearchString("DADA");
+            assertEquals(2, computePartialMatchLengthUpdateValues(searchString));
         }
 
         @Override
@@ -103,6 +108,42 @@ public class PublicTests {
         @Override
         public int getSearchStringLength() {
             return 1;
+        }
+    }
+
+    @Nested
+    class PartialMatchLengthUpdateValuesAsMatrixTest {
+
+        private final PartialMatchLengthUpdateValuesAsMatrix<Alpha> matrix
+            = new PartialMatchLengthUpdateValuesAsMatrix<>(index, Alpha.toSearchString("AABBCCDD"));
+
+        @Test
+        void testGetPartialMatchLengthUpdate() {
+            assertEquals(5, matrix.getPartialMatchLengthUpdate(4, Alpha.C));
+            assertEquals(1, matrix.getPartialMatchLengthUpdate(4, Alpha.A));
+        }
+
+        @Test
+        void testGetSearchStringLength() {
+            assertEquals(8, matrix.getSearchStringLength());
+        }
+    }
+
+    @Nested
+    class PartialMatchLengthUpdateValuesAsAutomatonTest {
+
+        private final PartialMatchLengthUpdateValuesAsAutomaton<Alpha> matrix
+            = new PartialMatchLengthUpdateValuesAsAutomaton<>(index, Alpha.toSearchString("AABBCCDD"));
+
+        @Test
+        void testGetPartialMatchLengthUpdate() {
+            assertEquals(5, matrix.getPartialMatchLengthUpdate(4, Alpha.C));
+            assertEquals(1, matrix.getPartialMatchLengthUpdate(4, Alpha.A));
+        }
+
+        @Test
+        void testGetSearchStringLength() {
+            assertEquals(8, matrix.getSearchStringLength());
         }
     }
 }
