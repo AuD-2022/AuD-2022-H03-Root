@@ -29,7 +29,30 @@ public class PublicTests {
                 index.sizeOfAlphabet(),
                 "sizeOfAlphabet did not return the correct value: hashes don't match");
         }
+    }
 
+    @Nested
+    class SelectionOfCharsIndexTest {
+
+        private final SelectionOfCharsIndex index;
+
+        SelectionOfCharsIndexTest() {
+            var alpha = "ABCD"
+                .chars()
+                .mapToObj(c -> (char) c)
+                .toList();
+            index = new SelectionOfCharsIndex(alpha);
+        }
+
+        @Test
+        void testApply() {
+            assertEquals(1, index.apply('B'));
+        }
+
+        @Test
+        void testSizeOfAlphabet() {
+            assertEquals( 4, index.sizeOfAlphabet());
+        }
     }
 }
 
