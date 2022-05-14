@@ -10,7 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PublicTests {
 
-    enum Alpha { A, B, C, D }
+    enum Alpha {
+        A, B, C, D;
+
+        public static Alpha[] toSearchString(String s) {
+            return s.chars()
+                .mapToObj(c -> String.valueOf((char) c))
+                .map(Alpha::valueOf)
+                .toArray(Alpha[]::new);
+        }
+    }
+
+    private final EnumIndex<Alpha> index = new EnumIndex<>(Alpha.class);
 
     @Nested
     class UnicodeNumberOfCharIndexTest {
@@ -60,8 +71,6 @@ public class PublicTests {
     @Nested
     class EnumIndexTest {
 
-        private final EnumIndex<Alpha> index = new EnumIndex<>(Alpha.class);
-
         @Test
         void testApply() {
             assertEquals(1, index.apply(Alpha.B));
@@ -70,6 +79,30 @@ public class PublicTests {
         @Test
         void testSizeOfAlphabet() {
             assertEquals( 4, index.sizeOfAlphabet());
+        }
+    }
+
+    @Nested
+    class PartialMatchLengthUpdateValuesTest extends PartialMatchLengthUpdateValues<Alpha> {
+
+        public PartialMatchLengthUpdateValuesTest() {
+            super(index);
+        }
+
+        @Test
+        void testComputePartialMatchLengthUpdateValues() {
+            var searchString = Alpha.toSearchString("ABBABBA");
+            assertEquals(4, computePartialMatchLengthUpdateValues(searchString));
+        }
+
+        @Override
+        public int getPartialMatchLengthUpdate(int state, Alpha letter) {
+            return 1;
+        }
+
+        @Override
+        public int getSearchStringLength() {
+            return 1;
         }
     }
 }
