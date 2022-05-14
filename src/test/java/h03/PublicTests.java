@@ -2,6 +2,10 @@ package h03;
 
 import org.junit.jupiter.api.*;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import static h03.MD5Assert.assertMd5Matches;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PublicTests {
@@ -20,7 +24,37 @@ public class PublicTests {
 
         @Test
         void testSizeOfAlphabet() {
-            assertEquals(1 << 16, index.sizeOfAlphabet());
+            assertMd5Matches(
+                "297ce0b3c836ae307023d7c2c3a7b1ec",
+                index.sizeOfAlphabet(),
+                "sizeOfAlphabet did not return the correct value: hashes don't match");
         }
+
+    }
+}
+
+class MD5Assert {
+
+    public static void assertMd5Matches(String expectedHash, int actual, String message) {
+        try {
+            var s = String.valueOf(actual);
+            assertEquals(expectedHash, md5(s), message);
+        } catch (NoSuchAlgorithmException e) {
+            fail("Could not load md5 hash", e);
+        }
+    }
+
+    private static String md5(String s) throws NoSuchAlgorithmException {
+        var md5 = MessageDigest.getInstance("MD5");
+        md5.update(s.getBytes());
+        return toHex(md5.digest());
+    }
+
+    private static String toHex(byte[] bytes) {
+        var sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append("%02x".formatted(b));
+        }
+        return sb.toString();
     }
 }
