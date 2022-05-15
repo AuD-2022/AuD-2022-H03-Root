@@ -160,7 +160,7 @@ public class PublicTests {
 
 
         @Test
-        void testGetPartialMatchLengthUpdate() {
+        void testFindAllMatches() {
             var haystack = Alpha.makeString("BABBABABAABAB");
             var matches = matcher.findAllMatches(haystack);
 
