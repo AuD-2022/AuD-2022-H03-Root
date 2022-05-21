@@ -2,6 +2,7 @@ package h03;
 
 import h03.h2.SelectionOfCharsIndexTests;
 import h03.h2.UnicodeNumberOfCharIndexTests;
+import h03.h3.EnumIndexTests;
 import h03.utils.transformer.AccessTransformer;
 import org.sourcegrade.jagr.api.rubric.*;
 import org.sourcegrade.jagr.api.testing.RubricConfiguration;
@@ -49,9 +50,21 @@ public class H03_RubricProvider implements RubricProvider {
         )
         .build();
 
+    private static final Criterion H3 = Criterion.builder()
+        .shortDescription("H3 | Konkrete Alphabete mit Enumerationen")
+        .addChildCriteria(
+            DEFAULT_CRITERION.apply("Konstruktor in Klasse EnumIndex funktioniert wie beschrieben.",
+                () -> EnumIndexTests.class.getDeclaredMethod("testConstructor", Class.class)),
+            DEFAULT_CRITERION.apply("Methode apply(T) in Klasse EnumIndex funktioniert wie beschrieben.",
+                () -> EnumIndexTests.class.getDeclaredMethod("testApply", Class.class)),
+            DEFAULT_CRITERION.apply("Methode sizeOfAlphabet() in Klasse EnumIndex funktioniert wie beschrieben.",
+                () -> EnumIndexTests.class.getDeclaredMethod("testSizeOfAlphabet", Class.class))
+        )
+        .build();
+
     public static final Rubric RUBRIC = Rubric.builder()
         .title("H03")
-        .addChildCriteria(H2)
+        .addChildCriteria(H2, H3)
         .build();
 
     @Override

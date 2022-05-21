@@ -9,6 +9,7 @@
       "files": [
         "h03/h2/UnicodeNumberOfCharIndexTests.java",
         "h03/h2/SelectionOfCharsIndexTests.java",
+        "h03/h3/EnumIndexTests.java",
         "h03/utils/transformer/AccessTransformer.java",
         "h03/H03_RubricProvider.java"
       ]
