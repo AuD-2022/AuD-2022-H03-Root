@@ -7,13 +7,27 @@
     {
       "name": "grader",
       "files": [
+        "h03/h2/UnicodeNumberOfCharIndexTests.java",
+        "h03/h2/SelectionOfCharsIndexTests.java",
+        "h03/utils/transformer/AccessTransformer.java",
         "h03/H03_RubricProvider.java"
       ]
     },
     {
       "name": "solution",
       "files": [
-        "h03/Main.java"
+        "h03/EnumIndex.java",
+        "h03/FunctionToInt.java",
+        "h03/Main.java",
+        "h03/PartialMatchLengthUpdateValues.java",
+        "h03/PartialMatchLengthUpdateValuesAsAutomaton.java",
+        "h03/PartialMatchLengthUpdateValuesAsMatrix.java",
+        "h03/SelectionOfCharsIndex.java",
+        "h03/StringMatcher.java",
+        "h03/Transition.java",
+        "h03/UnicodeNumberOfCharIndex.java",
+
+        "h03/ExampleJUnitTest.java"
       ]
     }
   ]
