@@ -3,6 +3,7 @@ package h03;
 import h03.h2.SelectionOfCharsIndexTests;
 import h03.h2.UnicodeNumberOfCharIndexTests;
 import h03.h3.EnumIndexTests;
+import h03.h4.PartialMatchLengthUpdateValuesTests;
 import h03.utils.transformer.AccessTransformer;
 import org.sourcegrade.jagr.api.rubric.*;
 import org.sourcegrade.jagr.api.testing.RubricConfiguration;
@@ -62,9 +63,18 @@ public class H03_RubricProvider implements RubricProvider {
         )
         .build();
 
+    private static final Criterion H4 = Criterion.builder()
+        .shortDescription("H4 | Abstrakte Tabelle für String Matching BOFA")
+        .addChildCriteria(
+            DEFAULT_CRITERION.apply("Methode computePartialMatchLengthUpdateValues(T[]) funktioniert wie beschrieben.",
+                () -> PartialMatchLengthUpdateValuesTests.class
+                    .getDeclaredMethod("testComputePartialMatchLengthUpdateValues", int.class, String.class))
+        )
+        .build();
+
     public static final Rubric RUBRIC = Rubric.builder()
         .title("H03")
-        .addChildCriteria(H2, H3)
+        .addChildCriteria(H2, H3, H4)
         .build();
 
     @Override
