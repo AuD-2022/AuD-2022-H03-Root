@@ -11,7 +11,11 @@
         "h03/h2/SelectionOfCharsIndexTests.java",
         "h03/h3/EnumIndexTests.java",
         "h03/h4/PartialMatchLengthUpdateValuesTests.java",
-        "h03/utils/transformer/AccessTransformer.java",
+        "h03/provider/RepeatingSearchStringProvider.java",
+        "h03/provider/SimpleSearchStringProvider.java",
+        "h03/transformer/AccessTransformer.java",
+        "h03/Alphabet.java",
+        "h03/FunctionToIntImpl.java",
         "h03/H03_RubricProvider.java"
       ]
     },

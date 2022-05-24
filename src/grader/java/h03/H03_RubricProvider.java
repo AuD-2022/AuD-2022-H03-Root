@@ -4,7 +4,7 @@ import h03.h2.SelectionOfCharsIndexTests;
 import h03.h2.UnicodeNumberOfCharIndexTests;
 import h03.h3.EnumIndexTests;
 import h03.h4.PartialMatchLengthUpdateValuesTests;
-import h03.utils.transformer.AccessTransformer;
+import h03.transformer.AccessTransformer;
 import org.sourcegrade.jagr.api.rubric.*;
 import org.sourcegrade.jagr.api.testing.RubricConfiguration;
 
