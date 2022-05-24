@@ -4,6 +4,8 @@ import h03.h2.SelectionOfCharsIndexTests;
 import h03.h2.UnicodeNumberOfCharIndexTests;
 import h03.h3.EnumIndexTests;
 import h03.h4.PartialMatchLengthUpdateValuesTests;
+import h03.h5.Alt_PartialMatchLengthUpdateValuesAsMatrixTests;
+import h03.h5.PartialMatchLengthUpdateValuesAsMatrixTests;
 import h03.transformer.AccessTransformer;
 import org.sourcegrade.jagr.api.rubric.*;
 import org.sourcegrade.jagr.api.testing.RubricConfiguration;
@@ -12,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 @RubricForSubmission("h03")
 public class H03_RubricProvider implements RubricProvider {
@@ -21,6 +24,15 @@ public class H03_RubricProvider implements RubricProvider {
             .shortDescription(shortDescription)
             .grader(Grader.testAwareBuilder()
                 .requirePass(JUnitTestRef.ofMethod(callable))
+                .pointsFailedMin()
+                .pointsPassedMax()
+                .build())
+            .build();
+    private static final BiFunction<String, Stream<Callable<Method>>, Criterion> OR_CRITERION = (shortDescription, callables) ->
+        Criterion.builder()
+            .shortDescription(shortDescription)
+            .grader(Grader.testAwareBuilder()
+                .requirePass(JUnitTestRef.or(callables.map(JUnitTestRef::ofMethod).toArray(JUnitTestRef[]::new)))
                 .pointsFailedMin()
                 .pointsPassedMax()
                 .build())
@@ -72,9 +84,53 @@ public class H03_RubricProvider implements RubricProvider {
         )
         .build();
 
+    private static final Criterion H5 = Criterion.builder()
+        .shortDescription("H5 | Tabellenimplementationen für String Matching BOFA als Matrix")
+        .addChildCriteria(
+            OR_CRITERION.apply("Die Dimensionen der Matrix sind korrekt.", Stream.of(
+                () -> PartialMatchLengthUpdateValuesAsMatrixTests.class
+                    .getDeclaredMethod("testMatrixDimensions", List.class),
+                () -> Alt_PartialMatchLengthUpdateValuesAsMatrixTests.class
+                    .getDeclaredMethod("testMatrixDimensions", List.class))),
+            OR_CRITERION.apply("Die Zustände der Matrix sind korrekt, wenn ein Match vorliegt.", Stream.of(
+                () -> PartialMatchLengthUpdateValuesAsMatrixTests.class
+                    .getDeclaredMethod("testStatesWhenMatch", List.class),
+                () -> Alt_PartialMatchLengthUpdateValuesAsMatrixTests.class
+                    .getDeclaredMethod("testStatesWhenMatch", List.class))),
+            OR_CRITERION.apply("Folgezustände für Zeichen, die nicht im Suchstring vorkommen sind immer 0.", Stream.of(
+                () -> PartialMatchLengthUpdateValuesAsMatrixTests.class
+                    .getDeclaredMethod("testDefaultStates", List.class),
+                () -> Alt_PartialMatchLengthUpdateValuesAsMatrixTests.class
+                    .getDeclaredMethod("testDefaultStates", List.class))),
+            Criterion.builder()
+                .shortDescription("Die Matrix ist vollständig korrekt für einen komplexeren Fall (Vorlesungsfolien).")
+                .maxPoints(2)
+                .grader(Grader.testAwareBuilder()
+                    .requirePass(JUnitTestRef.or(
+                        JUnitTestRef.ofMethod(() -> PartialMatchLengthUpdateValuesAsMatrixTests.class
+                            .getDeclaredMethod("testComplex")),
+                        JUnitTestRef.ofMethod(() -> Alt_PartialMatchLengthUpdateValuesAsMatrixTests.class
+                            .getDeclaredMethod("testComplex"))
+                    ))
+                    .pointsFailedMin()
+                    .pointsPassedMax()
+                    .build())
+                .build(),
+            OR_CRITERION.apply("Methode getPartialMatchLengthUpdate(int, T) liefert den korrekten Folgezustand zurück.",
+                Stream.of(
+                    () -> PartialMatchLengthUpdateValuesAsMatrixTests.class
+                        .getDeclaredMethod("testGetPartialMatchLengthUpdate", List.class),
+                    () -> Alt_PartialMatchLengthUpdateValuesAsMatrixTests.class
+                        .getDeclaredMethod("testGetPartialMatchLengthUpdate", List.class))),
+            DEFAULT_CRITERION.apply("Methode getSearchStringLength() liefert den korrekten Wert zurück.",
+                () -> PartialMatchLengthUpdateValuesAsMatrixTests.class
+                    .getDeclaredMethod("testGetSearchStringLength", List.class))
+        )
+        .build();
+
     public static final Rubric RUBRIC = Rubric.builder()
         .title("H03")
-        .addChildCriteria(H2, H3, H4)
+        .addChildCriteria(H2, H3, H4, H5)
         .build();
 
     @Override

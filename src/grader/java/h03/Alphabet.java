@@ -12,6 +12,10 @@ public class Alphabet {
     private static final Function<Integer, Stream<Character>> GENERATOR = i -> Stream.iterate('A', c -> (char) (c + 1))
         .limit(Math.min(Math.max(i, 0), SIZE));
 
+    public static List<Character> getAlphabet() {
+        return GENERATOR.apply(SIZE).toList();
+    }
+
     public static List<Character> generate(int length) {
         return GENERATOR.apply(length).toList();
     }
