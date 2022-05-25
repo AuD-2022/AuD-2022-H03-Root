@@ -118,27 +118,7 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
     @ExtendWith(JagrExecutionCondition.class)
     @SuppressWarnings("unchecked")
     public void testComplex() throws NoSuchFieldException, IllegalAccessException {
-        FunctionToInt<Character> function = new FunctionToInt<>() {
-            private final Map<Character, Integer> map = Map.of(
-                'a', 0,
-                'g', 1,
-                'i', 2,
-                'n', 3
-            );
-
-            @Override
-            public int sizeOfAlphabet() {
-                return 4;
-            }
-
-            @Override
-            public int apply(Character character) throws IllegalArgumentException {
-                if (map.containsKey(character)) {
-                    return map.get(character);
-                }
-                throw new IllegalArgumentException();
-            }
-        };
+        FunctionToInt<Character> function = new ComplexFunctionToInt();
         List<Transition<Character>>[] expectedStates = new List[] {
             List.of(new Transition<>(1, List.of('g'))),
             List.of(new Transition<>(2, List.of('a')), new Transition<>(1, List.of('g'))),

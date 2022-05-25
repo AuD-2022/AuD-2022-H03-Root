@@ -1,9 +1,6 @@
 package h03.h5;
 
-import h03.Alphabet;
-import h03.FunctionToInt;
-import h03.FunctionToIntImpl;
-import h03.PartialMatchLengthUpdateValuesAsMatrix;
+import h03.*;
 import h03.provider.SimpleSearchStringProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,27 +95,7 @@ public class Alt_PartialMatchLengthUpdateValuesAsMatrixTests {
     @Test
     @ExtendWith(JagrExecutionCondition.class)
     public void testComplex() throws NoSuchFieldException, IllegalAccessException {
-        FunctionToInt<Character> function = new FunctionToInt<>() {
-            private final Map<Character, Integer> map = Map.of(
-                'a', 0,
-                'g', 1,
-                'i', 2,
-                'n', 3
-            );
-
-            @Override
-            public int sizeOfAlphabet() {
-                return 4;
-            }
-
-            @Override
-            public int apply(Character character) throws IllegalArgumentException {
-                if (map.containsKey(character)) {
-                    return map.get(character);
-                }
-                throw new IllegalArgumentException();
-            }
-        };
+        FunctionToInt<Character> function = new ComplexFunctionToInt();
         int[][] expectedMatrix = {
             {0, 1, 0, 0},
             {2, 1, 0, 0},

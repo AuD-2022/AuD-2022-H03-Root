@@ -18,6 +18,7 @@
         "h03/provider/SimpleSearchStringProvider.java",
         "h03/transformer/AccessTransformer.java",
         "h03/Alphabet.java",
+        "h03/ComplexFunctionToInt.java",
         "h03/FunctionToIntImpl.java",
         "h03/H03_RubricProvider.java"
       ]
