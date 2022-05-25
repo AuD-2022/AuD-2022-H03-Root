@@ -7,6 +7,7 @@ import h03.h4.PartialMatchLengthUpdateValuesTests;
 import h03.h5.Alt_PartialMatchLengthUpdateValuesAsMatrixTests;
 import h03.h5.PartialMatchLengthUpdateValuesAsMatrixTests;
 import h03.h6.PartialMatchLengthUpdateValuesAsAutomatonTests;
+import h03.h7.StringMatcherTests;
 import h03.transformer.AccessTransformer;
 import org.sourcegrade.jagr.api.rubric.*;
 import org.sourcegrade.jagr.api.testing.RubricConfiguration;
@@ -156,9 +157,46 @@ public class H03_RubricProvider implements RubricProvider {
         )
         .build();
 
+    private static final Criterion H7 = Criterion.builder()
+        .shortDescription("H7 | Algorithmus String Matching BOFA")
+        .addChildCriteria(
+            DEFAULT_CRITERION.apply(
+                "Der Konstruktor von StringMatcher setzt die Objektkonstante 'VALUES' auf das als Parameter übergebene Objekt.",
+                () -> StringMatcherTests.class.getDeclaredMethod("testConstructor")),
+            DEFAULT_CRITERION.apply("Die Methode findAllMatches(T[]) funktioniert korrekt für eine einfache Eingabe mit " +
+                    "PartialMatchLengthUpdateValuesAsMatrix.",
+                () -> StringMatcherTests.class.getDeclaredMethod("testSimpleWithMatrix", List.class)),
+            DEFAULT_CRITERION.apply("Die Methode findAllMatches(T[]) funktioniert korrekt für eine einfache Eingabe mit " +
+                    "PartialMatchLengthUpdateValuesAsAutomaton.",
+                () -> StringMatcherTests.class.getDeclaredMethod("testSimpleWithAutomaton", List.class)),
+            Criterion.builder()
+                .shortDescription("Die Methode findAllMatches(T[]) funktioniert korrekt für eine komplexere Eingabe mit " +
+                    "PartialMatchLengthUpdateValuesAsMatrix.")
+                .maxPoints(2)
+                .grader(Grader.testAwareBuilder()
+                    .requirePass(JUnitTestRef.ofMethod(() -> StringMatcherTests.class
+                        .getDeclaredMethod("testComplexWithMatrix")))
+                    .pointsFailedMin()
+                    .pointsPassedMax()
+                    .build())
+                .build(),
+            Criterion.builder()
+                .shortDescription("Die Methode findAllMatches(T[]) funktioniert korrekt für eine komplexere Eingabe mit " +
+                    "PartialMatchLengthUpdateValuesAsAutomaton.")
+                .maxPoints(2)
+                .grader(Grader.testAwareBuilder()
+                    .requirePass(JUnitTestRef.ofMethod(() -> StringMatcherTests.class
+                        .getDeclaredMethod("testComplexWithAutomaton")))
+                    .pointsFailedMin()
+                    .pointsPassedMax()
+                    .build())
+                .build()
+        )
+        .build();
+
     public static final Rubric RUBRIC = Rubric.builder()
         .title("H03")
-        .addChildCriteria(H2, H3, H4, H5, H6)
+        .addChildCriteria(H2, H3, H4, H5, H6, H7)
         .build();
 
     @Override
