@@ -80,6 +80,8 @@ public class H03_RubricProvider implements RubricProvider {
     private static final Criterion H4 = Criterion.builder()
         .shortDescription("H4 | Abstrakte Tabelle für String Matching BOFA")
         .addChildCriteria(
+            DEFAULT_CRITERION.apply("Konstruktor von PartialMatchLengthUpateValues funktioniert wie beschrieben.",
+                () -> PartialMatchLengthUpdateValuesTests.class.getDeclaredMethod("testConstructor")),
             DEFAULT_CRITERION.apply("Methode computePartialMatchLengthUpdateValues(T[]) funktioniert wie beschrieben.",
                 () -> PartialMatchLengthUpdateValuesTests.class
                     .getDeclaredMethod("testComputePartialMatchLengthUpdateValues", int.class, String.class))
