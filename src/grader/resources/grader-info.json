@@ -13,6 +13,7 @@
         "h03/h4/PartialMatchLengthUpdateValuesTests.java",
         "h03/h5/Alt_PartialMatchLengthUpdateValuesAsMatrixTests.java",
         "h03/h5/PartialMatchLengthUpdateValuesAsMatrixTests.java",
+        "h03/h6/PartialMatchLengthUpdateValuesAsAutomatonTests.java",
         "h03/provider/RepeatingSearchStringProvider.java",
         "h03/provider/SimpleSearchStringProvider.java",
         "h03/transformer/AccessTransformer.java",

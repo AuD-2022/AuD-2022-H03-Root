@@ -6,6 +6,7 @@ import h03.h3.EnumIndexTests;
 import h03.h4.PartialMatchLengthUpdateValuesTests;
 import h03.h5.Alt_PartialMatchLengthUpdateValuesAsMatrixTests;
 import h03.h5.PartialMatchLengthUpdateValuesAsMatrixTests;
+import h03.h6.PartialMatchLengthUpdateValuesAsAutomatonTests;
 import h03.transformer.AccessTransformer;
 import org.sourcegrade.jagr.api.rubric.*;
 import org.sourcegrade.jagr.api.testing.RubricConfiguration;
@@ -128,9 +129,36 @@ public class H03_RubricProvider implements RubricProvider {
         )
         .build();
 
+    private static final Criterion H6 = Criterion.builder()
+        .shortDescription("H6 | Tabellenimplementationen für String Matching BOFA als Automat")
+        .addChildCriteria(
+            DEFAULT_CRITERION.apply("Die Größe des Arrays 'theStates' entspricht der Anzahl der möglichen Zustände.",
+                () -> PartialMatchLengthUpdateValuesAsAutomatonTests.class
+                    .getDeclaredMethod("testTheStatesLength", List.class)),
+            DEFAULT_CRITERION.apply("Alle Listen in 'theStates' haben die korrekte Anzahl von Transitionen.",
+                () -> PartialMatchLengthUpdateValuesAsAutomatonTests.class
+                    .getDeclaredMethod("testTheStatesListSize", List.class)),
+            DEFAULT_CRITERION.apply("Die Zustände und Transitionen sind korrekt für den Fall, dass ein Match vorliegt.",
+                () -> PartialMatchLengthUpdateValuesAsAutomatonTests.class
+                    .getDeclaredMethod("testStatesWhenMatch", List.class)),
+            DEFAULT_CRITERION.apply("Transitionen für Zeichen, die nicht im Suchstring vorkommen, verweisen immer auf Zustand 0.",
+                () -> PartialMatchLengthUpdateValuesAsAutomatonTests.class
+                    .getDeclaredMethod("testDefaultStates", List.class)),
+            DEFAULT_CRITERION.apply("Der Automat ist vollständig korrekt für einen komplexeren Fall (Vorlesungsfolien).",
+                () -> PartialMatchLengthUpdateValuesAsAutomatonTests.class
+                    .getDeclaredMethod("testComplex")),
+            DEFAULT_CRITERION.apply("Methode getPartialMatchLengthUpdate(int, T) liefert den korrekten Folgezustand zurück.",
+                () -> PartialMatchLengthUpdateValuesAsAutomatonTests.class
+                    .getDeclaredMethod("testGetPartialMatchLengthUpdate", List.class)),
+            DEFAULT_CRITERION.apply("Methode getSearchStringLength() liefert den korrekten Wert zurück.",
+                () -> PartialMatchLengthUpdateValuesAsAutomatonTests.class
+                    .getDeclaredMethod("testGetSearchStringLength", List.class))
+        )
+        .build();
+
     public static final Rubric RUBRIC = Rubric.builder()
         .title("H03")
-        .addChildCriteria(H2, H3, H4, H5)
+        .addChildCriteria(H2, H3, H4, H5, H6)
         .build();
 
     @Override
