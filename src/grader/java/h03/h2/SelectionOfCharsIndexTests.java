@@ -1,17 +1,15 @@
 package h03.h2;
 
 import h03.SelectionOfCharsIndex;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
-import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
+import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -23,6 +21,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestForSubmission("h03")
 public class SelectionOfCharsIndexTests {
 
+    private static final Field THE_CHARS;
+
+    static {
+        try {
+            THE_CHARS = SelectionOfCharsIndex.class.getDeclaredField("theChars");
+            THE_CHARS.setAccessible(true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final Function<List<Character>, String> inputListToString = characterList -> "[%s]".formatted(
         characterList.stream()
             .map(c -> "'%c' (0x%s)".formatted(c, Integer.toString(c, 16)))
@@ -30,11 +39,8 @@ public class SelectionOfCharsIndexTests {
 
     @ParameterizedTest
     @ArgumentsSource(Provider.class)
-    @ExtendWith(JagrExecutionCondition.class)
-    public void testConstructor(List<Character> characterList) throws NoSuchFieldException, IllegalAccessException {
-        char[] theChars = (char[]) SelectionOfCharsIndex.class
-            .getDeclaredField("theChars")
-            .get(new SelectionOfCharsIndex(characterList));
+    public void testConstructor(List<Character> characterList) throws IllegalAccessException {
+        char[] theChars = (char[]) THE_CHARS.get(new SelectionOfCharsIndex(characterList));
 
         assertEquals(characterList.size(), theChars.length,
             "Length of array 'theChars' differs from expected value for input list " + inputListToString.apply(characterList));

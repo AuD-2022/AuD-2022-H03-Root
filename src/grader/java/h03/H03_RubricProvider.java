@@ -8,9 +8,7 @@ import h03.h5.Alt_PartialMatchLengthUpdateValuesAsMatrixTests;
 import h03.h5.PartialMatchLengthUpdateValuesAsMatrixTests;
 import h03.h6.PartialMatchLengthUpdateValuesAsAutomatonTests;
 import h03.h7.StringMatcherTests;
-import h03.transformer.AccessTransformer;
 import org.sourcegrade.jagr.api.rubric.*;
-import org.sourcegrade.jagr.api.testing.RubricConfiguration;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -80,11 +78,11 @@ public class H03_RubricProvider implements RubricProvider {
     private static final Criterion H4 = Criterion.builder()
         .shortDescription("H4 | Abstrakte Tabelle für String Matching BOFA")
         .addChildCriteria(
-            DEFAULT_CRITERION.apply("Konstruktor von PartialMatchLengthUpateValues funktioniert wie beschrieben.",
+            DEFAULT_CRITERION.apply("Konstruktor von PartialMatchLengthUpdateValues funktioniert wie beschrieben.",
                 () -> PartialMatchLengthUpdateValuesTests.class.getDeclaredMethod("testConstructor")),
             DEFAULT_CRITERION.apply("Methode computePartialMatchLengthUpdateValues(T[]) funktioniert wie beschrieben.",
                 () -> PartialMatchLengthUpdateValuesTests.class
-                    .getDeclaredMethod("testComputePartialMatchLengthUpdateValues", int.class, String.class))
+                    .getDeclaredMethod("testComputePartialMatchLengthUpdateValues", int.class, List.class))
         )
         .build();
 
@@ -204,10 +202,5 @@ public class H03_RubricProvider implements RubricProvider {
     @Override
     public Rubric getRubric() {
         return RUBRIC;
-    }
-
-    @Override
-    public void configure(RubricConfiguration configuration) {
-        configuration.addTransformer(new AccessTransformer());
     }
 }

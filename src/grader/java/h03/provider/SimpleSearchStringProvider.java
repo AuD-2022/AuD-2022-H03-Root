@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class SimpleSearchStringProvider implements ArgumentsProvider {
 
     private static final long SEED = 0L;
-    private static final int NUMBER_OF_SEARCH_STRINGS = 5;
+    private static final int NUMBER_OF_SEARCH_STRINGS = 3;
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {

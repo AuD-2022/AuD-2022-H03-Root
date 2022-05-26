@@ -2,15 +2,13 @@ package h03.h6;
 
 import h03.*;
 import h03.provider.SimpleSearchStringProvider;
-import kotlin.Pair;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.opentest4j.AssertionFailedError;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
-import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.BiFunction;
 
@@ -23,15 +21,23 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
         %s
         Alphabet: %s
         Search string: %s""".formatted(s, Alphabet.SHORT_DESCRIPTION, needle);
+    private static final Field THE_STATES;
+
+    static {
+        try {
+            THE_STATES = PartialMatchLengthUpdateValuesAsAutomaton.class.getDeclaredField("theStates");
+            THE_STATES.setAccessible(true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
     @SuppressWarnings("unchecked")
-    public void testTheStatesLength(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
+    public void testTheStatesLength(List<Character> needle) throws IllegalAccessException {
         FunctionToInt<Character> function = new FunctionToIntImpl();
-        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) PartialMatchLengthUpdateValuesAsAutomaton.class
-            .getDeclaredField("theStates")
+        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) THE_STATES
             .get(new PartialMatchLengthUpdateValuesAsAutomaton<>(function, needle.toArray(Character[]::new)));
 
         assertEquals(needle.size() + 1, theStates.length, EXCEPTION_MESSAGE.apply(
@@ -40,12 +46,10 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
 
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
     @SuppressWarnings("unchecked")
-    public void testTheStatesListSize(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
+    public void testTheStatesListSize(List<Character> needle) throws IllegalAccessException {
         FunctionToInt<Character> function = new FunctionToIntImpl();
-        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) PartialMatchLengthUpdateValuesAsAutomaton.class
-            .getDeclaredField("theStates")
+        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) THE_STATES
             .get(new PartialMatchLengthUpdateValuesAsAutomaton<>(function, needle.toArray(Character[]::new)));
 
         assertEquals(1, theStates[0].size(), EXCEPTION_MESSAGE.apply(
@@ -60,12 +64,10 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
 
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
     @SuppressWarnings("unchecked")
-    public void testStatesWhenMatch(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
+    public void testStatesWhenMatch(List<Character> needle) throws IllegalAccessException {
         FunctionToInt<Character> function = new FunctionToIntImpl();
-        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) PartialMatchLengthUpdateValuesAsAutomaton.class
-            .getDeclaredField("theStates")
+        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) THE_STATES
             .get(new PartialMatchLengthUpdateValuesAsAutomaton<>(function, needle.toArray(Character[]::new)));
 
         for (int i = 0; i < needle.size(); i++) {
@@ -92,12 +94,10 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
 
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
     @SuppressWarnings("unchecked")
-    public void testDefaultStates(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
+    public void testDefaultStates(List<Character> needle) throws IllegalAccessException {
         FunctionToInt<Character> function = new FunctionToIntImpl();
-        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) PartialMatchLengthUpdateValuesAsAutomaton.class
-            .getDeclaredField("theStates")
+        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) THE_STATES
             .get(new PartialMatchLengthUpdateValuesAsAutomaton<>(function, needle.toArray(Character[]::new)));
         List<Character> leftOverCharacters = new ArrayList<>(Alphabet.getAlphabet());
         leftOverCharacters.removeAll(needle);
@@ -115,9 +115,8 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
     }
 
     @Test
-    @ExtendWith(JagrExecutionCondition.class)
     @SuppressWarnings("unchecked")
-    public void testComplex() throws NoSuchFieldException, IllegalAccessException {
+    public void testComplex() throws IllegalAccessException {
         FunctionToInt<Character> function = new ComplexFunctionToInt();
         List<Transition<Character>>[] expectedStates = new List[] {
             List.of(new Transition<>(1, List.of('g'))),
@@ -127,8 +126,7 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
         };
         List<Character> needle = List.of('g', 'a', 'g');
         List<Transition<Character>>[] actualStates =
-            (List<Transition<Character>>[]) PartialMatchLengthUpdateValuesAsAutomaton.class
-                .getDeclaredField("theStates")
+            (List<Transition<Character>>[]) THE_STATES
                 .get(new PartialMatchLengthUpdateValuesAsAutomaton<>(function, needle.toArray(Character[]::new)));
 
         assertEquals(expectedStates.length, actualStates.length, EXCEPTION_MESSAGE.apply(
@@ -154,15 +152,12 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
 
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
     @SuppressWarnings("unchecked")
-    public void testGetPartialMatchLengthUpdate(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
+    public void testGetPartialMatchLengthUpdate(List<Character> needle) throws IllegalAccessException {
         FunctionToInt<Character> function = new FunctionToIntImpl();
         PartialMatchLengthUpdateValues<Character> instance = new PartialMatchLengthUpdateValuesAsAutomaton<>(function,
             needle.toArray(Character[]::new));
-        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) PartialMatchLengthUpdateValuesAsAutomaton.class
-            .getDeclaredField("theStates")
-            .get(instance);
+        List<Transition<Character>>[] theStates = (List<Transition<Character>>[]) THE_STATES.get(instance);
 
         for (int i = 0; i < needle.size() + 1; i++) {
             for (Character character : Alphabet.getAlphabet()) {

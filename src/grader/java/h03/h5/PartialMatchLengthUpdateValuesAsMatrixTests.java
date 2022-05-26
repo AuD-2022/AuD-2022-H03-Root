@@ -3,15 +3,13 @@ package h03.h5;
 import h03.*;
 import h03.provider.SimpleSearchStringProvider;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
-import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,13 +25,21 @@ public class PartialMatchLengthUpdateValuesAsMatrixTests {
         %s
         Alphabet: %s
         Search string: %s""".formatted(s, Alphabet.SHORT_DESCRIPTION, needle);
+    private static final Field MATRIX;
+
+    static {
+        try {
+            MATRIX = PartialMatchLengthUpdateValuesAsMatrix.class.getDeclaredField("matrix");
+            MATRIX.setAccessible(true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
-    public void testMatrixDimensions(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
-        int[][] matrix = (int[][]) PartialMatchLengthUpdateValuesAsMatrix.class
-            .getDeclaredField("matrix")
+    public void testMatrixDimensions(List<Character> needle) throws IllegalAccessException {
+        int[][] matrix = (int[][]) MATRIX
             .get(new PartialMatchLengthUpdateValuesAsMatrix<>(new FunctionToIntImpl(), needle.toArray(Character[]::new)));
 
         assertEquals(Alphabet.SIZE, matrix.length, EXCEPTION_MESSAGE.apply(
@@ -47,11 +53,9 @@ public class PartialMatchLengthUpdateValuesAsMatrixTests {
 
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
-    public void testStatesWhenMatch(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
+    public void testStatesWhenMatch(List<Character> needle) throws IllegalAccessException {
         FunctionToInt<Character> function = new FunctionToIntImpl();
-        int[][] matrix = (int[][]) PartialMatchLengthUpdateValuesAsMatrix.class
-            .getDeclaredField("matrix")
+        int[][] matrix = (int[][]) MATRIX
             .get(new PartialMatchLengthUpdateValuesAsMatrix<>(function, needle.toArray(Character[]::new)));
 
         for (int i = 0; i < needle.size(); i++) {
@@ -73,11 +77,9 @@ public class PartialMatchLengthUpdateValuesAsMatrixTests {
      */
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
-    public void testDefaultStates(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
+    public void testDefaultStates(List<Character> needle) throws IllegalAccessException {
         FunctionToInt<Character> function = new FunctionToIntImpl();
-        int[][] matrix = (int[][]) PartialMatchLengthUpdateValuesAsMatrix.class
-            .getDeclaredField("matrix")
+        int[][] matrix = (int[][]) MATRIX
             .get(new PartialMatchLengthUpdateValuesAsMatrix<>(function, needle.toArray(Character[]::new)));
         List<Character> leftOverCharacters = new ArrayList<>(Alphabet.getAlphabet());
         leftOverCharacters.removeAll(needle);
@@ -96,8 +98,7 @@ public class PartialMatchLengthUpdateValuesAsMatrixTests {
     }
 
     @Test
-    @ExtendWith(JagrExecutionCondition.class)
-    public void testComplex() throws NoSuchFieldException, IllegalAccessException {
+    public void testComplex() throws IllegalAccessException {
         FunctionToInt<Character> function = new ComplexFunctionToInt();
         int[][] expectedMatrix = {
             {0, 2, 0, 2},
@@ -105,8 +106,7 @@ public class PartialMatchLengthUpdateValuesAsMatrixTests {
             {0, 0, 0, 0},
             {0, 0, 0, 0}
         };
-        int[][] actualMatrix = (int[][]) PartialMatchLengthUpdateValuesAsMatrix.class
-            .getDeclaredField("matrix")
+        int[][] actualMatrix = (int[][]) MATRIX
             .get(new PartialMatchLengthUpdateValuesAsMatrix<>(function, new Character[] {'g', 'a', 'g'}));
 
         assertEquals(expectedMatrix.length, actualMatrix.length,
@@ -123,12 +123,11 @@ public class PartialMatchLengthUpdateValuesAsMatrixTests {
 
     @ParameterizedTest
     @ArgumentsSource(SimpleSearchStringProvider.class)
-    @ExtendWith(JagrExecutionCondition.class)
-    public void testGetPartialMatchLengthUpdate(List<Character> needle) throws NoSuchFieldException, IllegalAccessException {
+    public void testGetPartialMatchLengthUpdate(List<Character> needle) throws IllegalAccessException {
         FunctionToInt<Character> function = new FunctionToIntImpl();
         PartialMatchLengthUpdateValuesAsMatrix<Character> instance = new PartialMatchLengthUpdateValuesAsMatrix<>(function,
             needle.toArray(Character[]::new));
-        int[][] matrix = (int[][]) PartialMatchLengthUpdateValuesAsMatrix.class.getDeclaredField("matrix").get(instance);
+        int[][] matrix = (int[][]) MATRIX.get(instance);
 
         for (Character currentCharacter : Alphabet.getAlphabet()) {
             int i = function.apply(currentCharacter);

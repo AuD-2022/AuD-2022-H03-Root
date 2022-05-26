@@ -3,14 +3,12 @@ package h03.h7;
 import h03.*;
 import h03.provider.SimpleSearchStringProvider;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
-import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
+import java.lang.reflect.Field;
 import java.util.List;
-import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -25,10 +23,19 @@ public class StringMatcherTests {
             Search string: %s
             Input string (source): %s""".formatted(message, alphabet, searchString, inputString);
     }
+    private static final Field VALUES;
+
+    static {
+        try {
+            VALUES = StringMatcher.class.getDeclaredField("VALUES");
+            VALUES.setAccessible(true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
-    @ExtendWith(JagrExecutionCondition.class)
-    public void testConstructor() throws NoSuchFieldException, IllegalAccessException {
+    public void testConstructor() throws IllegalAccessException {
         PartialMatchLengthUpdateValues<Character> values = new PartialMatchLengthUpdateValues<>(new FunctionToIntImpl()) {
             @Override
             public int getPartialMatchLengthUpdate(int state, Character letter) {
@@ -41,7 +48,7 @@ public class StringMatcherTests {
             }
         };
 
-        assertSame(values, StringMatcher.class.getDeclaredField("VALUES").get(new StringMatcher<>(values)),
+        assertSame(values, VALUES.get(new StringMatcher<>(values)),
             "Constructor did not assign parameter to field 'VALUES'");
     }
 

@@ -1,15 +1,14 @@
 package h03.h3;
 
 import h03.EnumIndex;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
-import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -20,17 +19,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestForSubmission("h03")
 public class EnumIndexTests {
 
+    private static final Field ENUM_ARRAY;
     private static final Function<Class<?>, String> GET_ENUM_CONSTANTS = clazz -> Arrays.toString(clazz.getEnumConstants());
+
+    static {
+        try {
+            ENUM_ARRAY = EnumIndex.class.getDeclaredField("enumArray");
+            ENUM_ARRAY.setAccessible(true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @ParameterizedTest
     @ArgumentsSource(Provider.class)
-    @ExtendWith(JagrExecutionCondition.class)
     @SuppressWarnings("unchecked")
-    public <T extends Enum<T>> void testConstructor(Class<T> enumClass) throws NoSuchFieldException, IllegalAccessException {
+    public <T extends Enum<T>> void testConstructor(Class<T> enumClass) throws IllegalAccessException {
         T[] expectedEnumConstants = enumClass.getEnumConstants();
-        T[] enumArray = (T[]) EnumIndex.class
-            .getDeclaredField("enumArray")
-            .get(new EnumIndex<>(enumClass));
+        T[] enumArray = (T[]) ENUM_ARRAY.get(new EnumIndex<>(enumClass));
 
         assertArrayEquals(expectedEnumConstants, enumArray,
             "Contents of array in field 'enumArray' differ from the expected values");
