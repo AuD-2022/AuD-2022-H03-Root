@@ -13,6 +13,7 @@ import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -79,11 +80,29 @@ public class PartialMatchLengthUpdateValuesTests {
 
     @ParameterizedTest
     @ArgumentsSource(RepeatingSearchStringProvider.class)
-    public void testComputePartialMatchLengthUpdateValues(int repeatLength, List<Character> needle) throws InvocationTargetException,
-        IllegalAccessException {
+    public void testComputePartialMatchLengthUpdateValuesWithRepeating(int repeatLength, List<Character> needle)
+        throws InvocationTargetException, IllegalAccessException {
         int k = (int) COMPUTE_PARTIAL_MATCH_LENGTH_UPDATE_VALUES.invoke(PARTIAL_MATCH_LENGTH_UPDATE_VALUES,
             (Object) needle.toArray(Character[]::new));
 
         assertEquals(repeatLength, k, "Number of repeating characters did not match expected value for input " + needle);
+    }
+
+    @Test
+    public void testComputePartialMatchLengthUpdateValuesWithSame() throws InvocationTargetException, IllegalAccessException {
+        Character[] needle = new Character[] {'A', 'A', 'A', 'A', 'A'};
+        int k = (int) COMPUTE_PARTIAL_MATCH_LENGTH_UPDATE_VALUES.invoke(PARTIAL_MATCH_LENGTH_UPDATE_VALUES, (Object) needle);
+
+        assertEquals(needle.length - 1, k,
+            "Number of repeating characters did not match expected value for input " + Arrays.toString(needle));
+    }
+
+    @Test
+    public void testComputePartialMatchLengthUpdateValuesWithSingle() throws InvocationTargetException, IllegalAccessException {
+        Character[] needle = new Character[] {'A'};
+        int k = (int) COMPUTE_PARTIAL_MATCH_LENGTH_UPDATE_VALUES.invoke(PARTIAL_MATCH_LENGTH_UPDATE_VALUES, (Object) needle);
+
+        assertEquals(0, k,
+            "Number of repeating characters did not match expected value for input " + Arrays.toString(needle));
     }
 }

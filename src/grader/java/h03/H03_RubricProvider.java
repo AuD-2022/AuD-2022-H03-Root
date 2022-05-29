@@ -82,9 +82,18 @@ public class H03_RubricProvider implements RubricProvider {
         .addChildCriteria(
             DEFAULT_CRITERION.apply("Konstruktor von PartialMatchLengthUpdateValues funktioniert wie beschrieben.",
                 () -> PartialMatchLengthUpdateValuesTests.class.getDeclaredMethod("testConstructor")),
-            DEFAULT_CRITERION.apply("Methode computePartialMatchLengthUpdateValues(T[]) funktioniert wie beschrieben.",
+            DEFAULT_CRITERION.apply(
+                "Methode computePartialMatchLengthUpdateValues(T[]) funktioniert mit einer sich wiederholenden Sequenz.",
                 () -> PartialMatchLengthUpdateValuesTests.class
-                    .getDeclaredMethod("testComputePartialMatchLengthUpdateValues", int.class, List.class))
+                    .getDeclaredMethod("testComputePartialMatchLengthUpdateValuesWithRepeating", int.class, List.class)),
+            DEFAULT_CRITERION.apply("Methode computePartialMatchLengthUpdateValues(T[]) funktioniert mit " +
+                    "einer aus den gleichen Zeichen bestehenden Sequenz.",
+                () -> PartialMatchLengthUpdateValuesTests.class
+                    .getDeclaredMethod("testComputePartialMatchLengthUpdateValuesWithSame")),
+            DEFAULT_CRITERION.apply(
+                "Methode computePartialMatchLengthUpdateValues(T[]) funktioniert mit einem einzelnen Zeichen.",
+                () -> PartialMatchLengthUpdateValuesTests.class
+                    .getDeclaredMethod("testComputePartialMatchLengthUpdateValuesWithSingle"))
         )
         .build();
 
