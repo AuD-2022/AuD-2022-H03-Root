@@ -1,6 +1,10 @@
 package h03.h3;
 
 import h03.EnumIndex;
+import h03.IllegalMethodsCheck;
+import h03.transformer.MethodInterceptor;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,6 +33,16 @@ public class EnumIndexTests {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @BeforeEach
+    public void resetInvocations() {
+        MethodInterceptor.reset();
+    }
+
+    @AfterEach
+    public void checkIllegalMethods() {
+        IllegalMethodsCheck.checkMethods("^java/lang/Class.+", "^java/lang/Enum.+");
     }
 
     @ParameterizedTest

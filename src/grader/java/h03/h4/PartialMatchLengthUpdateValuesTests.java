@@ -2,6 +2,9 @@ package h03.h4;
 
 import h03.*;
 import h03.provider.RepeatingSearchStringProvider;
+import h03.transformer.MethodInterceptor;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -42,6 +45,16 @@ public class PartialMatchLengthUpdateValuesTests {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @BeforeEach
+    public void resetInvocations() {
+        MethodInterceptor.reset();
+    }
+
+    @AfterEach
+    public void checkIllegalMethods() {
+        IllegalMethodsCheck.checkMethods();
     }
 
     // TODO: test other method once with each FunctionToInt

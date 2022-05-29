@@ -17,10 +17,14 @@
         "h03/h7/StringMatcherTests.java",
         "h03/provider/RepeatingSearchStringProvider.java",
         "h03/provider/SimpleSearchStringProvider.java",
+        "h03/transformer/BytecodeTransformations.java",
+        "h03/transformer/BytecodeUtils.java",
+        "h03/transformer/MethodInterceptor.java",
         "h03/Alphabet.java",
         "h03/ComplexFunctionToInt.java",
         "h03/FunctionToIntImpl.java",
-        "h03/H03_RubricProvider.java"
+        "h03/H03_RubricProvider.java",
+        "h03/IllegalMethodsCheck.java"
       ]
     },
     {

@@ -1,12 +1,17 @@
 package h03.h2;
 
+import h03.IllegalMethodsCheck;
 import h03.SelectionOfCharsIndex;
+import h03.transformer.MethodInterceptor;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
+import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -15,8 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestForSubmission("h03")
 public class SelectionOfCharsIndexTests {
@@ -30,6 +34,16 @@ public class SelectionOfCharsIndexTests {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @BeforeEach
+    public void resetInvocations() {
+        MethodInterceptor.reset();
+    }
+
+    @AfterEach
+    public void checkIllegalMethods() {
+        IllegalMethodsCheck.checkMethods("^java/lang/Character charValue\\(\\)C$");
     }
 
     private static final Function<List<Character>, String> inputListToString = characterList -> "[%s]".formatted(

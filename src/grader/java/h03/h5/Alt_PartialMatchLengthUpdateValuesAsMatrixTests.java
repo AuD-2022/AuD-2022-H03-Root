@@ -2,6 +2,9 @@ package h03.h5;
 
 import h03.*;
 import h03.provider.SimpleSearchStringProvider;
+import h03.transformer.MethodInterceptor;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -34,6 +37,16 @@ public class Alt_PartialMatchLengthUpdateValuesAsMatrixTests {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @BeforeEach
+    public void resetInvocations() {
+        MethodInterceptor.reset();
+    }
+
+    @AfterEach
+    public void checkIllegalMethods() {
+        IllegalMethodsCheck.checkMethods();
     }
 
     @ParameterizedTest

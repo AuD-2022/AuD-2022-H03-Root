@@ -8,7 +8,9 @@ import h03.h5.Alt_PartialMatchLengthUpdateValuesAsMatrixTests;
 import h03.h5.PartialMatchLengthUpdateValuesAsMatrixTests;
 import h03.h6.PartialMatchLengthUpdateValuesAsAutomatonTests;
 import h03.h7.StringMatcherTests;
+import h03.transformer.BytecodeTransformations;
 import org.sourcegrade.jagr.api.rubric.*;
+import org.sourcegrade.jagr.api.testing.RubricConfiguration;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -202,5 +204,10 @@ public class H03_RubricProvider implements RubricProvider {
     @Override
     public Rubric getRubric() {
         return RUBRIC;
+    }
+
+    @Override
+    public void configure(RubricConfiguration configuration) {
+        configuration.addTransformer(new BytecodeTransformations());
     }
 }
