@@ -7,13 +7,41 @@
     {
       "name": "grader",
       "files": [
-        "h03/H03_RubricProvider.java"
+        "h03/h2/UnicodeNumberOfCharIndexTests.java",
+        "h03/h2/SelectionOfCharsIndexTests.java",
+        "h03/h3/EnumIndexTests.java",
+        "h03/h4/PartialMatchLengthUpdateValuesTests.java",
+        "h03/h5/Alt_PartialMatchLengthUpdateValuesAsMatrixTests.java",
+        "h03/h5/PartialMatchLengthUpdateValuesAsMatrixTests.java",
+        "h03/h6/PartialMatchLengthUpdateValuesAsAutomatonTests.java",
+        "h03/h7/StringMatcherTests.java",
+        "h03/provider/RepeatingSearchStringProvider.java",
+        "h03/provider/SimpleSearchStringProvider.java",
+        "h03/transformer/BytecodeTransformations.java",
+        "h03/transformer/BytecodeUtils.java",
+        "h03/transformer/MethodInterceptor.java",
+        "h03/Alphabet.java",
+        "h03/ComplexFunctionToInt.java",
+        "h03/FunctionToIntImpl.java",
+        "h03/H03_RubricProvider.java",
+        "h03/IllegalMethodsCheck.java"
       ]
     },
     {
       "name": "solution",
       "files": [
-        "h03/Main.java"
+        "h03/EnumIndex.java",
+        "h03/FunctionToInt.java",
+        "h03/Main.java",
+        "h03/PartialMatchLengthUpdateValues.java",
+        "h03/PartialMatchLengthUpdateValuesAsAutomaton.java",
+        "h03/PartialMatchLengthUpdateValuesAsMatrix.java",
+        "h03/SelectionOfCharsIndex.java",
+        "h03/StringMatcher.java",
+        "h03/Transition.java",
+        "h03/UnicodeNumberOfCharIndex.java",
+
+        "h03/ExampleJUnitTest.java"
       ]
     }
   ]
