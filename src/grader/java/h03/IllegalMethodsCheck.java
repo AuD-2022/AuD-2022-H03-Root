@@ -26,7 +26,12 @@ public class IllegalMethodsCheck {
             for (MethodInterceptor.Invocation invocation : MethodInterceptor.getInvocations()) {
                 Stream<String> defaultAcceptedSignatures = Stream.of(
                     "^h03/.+",
-                    "^org/sourcegrade/jagr/core/executor/TimeoutHandler checkTimeout\\(\\)V$"
+                    "^org/sourcegrade/jagr/core/executor/TimeoutHandler checkTimeout\\(\\)V$",
+                    "^java/lang/Object .+",
+                    "^java/io/PrintStream .+",
+                    ".+ valueOf\\(.+\\).+",
+                    ".+ toString\\(.*\\).+",
+                    "^java/lang/.+ (boolean|byte|short|char|int|long|float|double)Value\\(\\).+"
                 );
 
                 if (Stream.concat(defaultAcceptedSignatures, Arrays.stream(acceptedSignatures))
