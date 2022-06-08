@@ -27,11 +27,12 @@ public class IllegalMethodsCheck {
                 Stream<String> defaultAcceptedSignatures = Stream.of(
                     "^h03/.+",
                     "^org/sourcegrade/jagr/core/executor/TimeoutHandler checkTimeout\\(\\)V$",
-                    "^java/lang/Object .+",
+                    ".+? (clone|equals|hashCode|toString)\\(.*\\).+",
                     "^java/io/PrintStream .+",
-                    ".+ valueOf\\(.+\\).+",
-                    ".+ toString\\(.*\\).+",
-                    "^java/lang/.+ (boolean|byte|short|char|int|long|float|double)Value\\(\\).+"
+                    ".+? valueOf\\(.+\\).+",
+                    ".+? toString\\(.*\\)Ljava/lang/String;$",
+                    "^java/lang/String format(ting)?\\(.*\\)Ljava/lang/String;$",
+                    "^java/lang/.+? (boolean|byte|short|char|int|long|float|double)Value\\(\\).+"
                 );
 
                 if (Stream.concat(defaultAcceptedSignatures, Arrays.stream(acceptedSignatures))

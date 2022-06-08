@@ -42,7 +42,14 @@ public class PartialMatchLengthUpdateValuesAsAutomatonTests {
 
     @AfterEach
     public void checkIllegalMethods() {
-        IllegalMethodsCheck.checkMethods();
+        IllegalMethodsCheck.checkMethods(
+            "^java/util/\\w*List add\\(Ljava/lang/Object;\\)Z$",
+            "^java/util/\\w*List add\\(ILjava/lang/Object;\\)V$",
+            "^java/util/\\w*List remove\\(I\\)Ljava/lang/Object;$",
+            "^java/util/\\w*List remove\\(Ljava/lang/Object;\\)Z$",
+            "^java/util/List of\\(.*\\)Ljava/util/List;$",
+            "^java/util/Arrays asList\\(\\[Ljava/lang/Object;\\)Ljava/util/List;$"
+        );
     }
 
     @ParameterizedTest

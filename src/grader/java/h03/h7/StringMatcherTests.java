@@ -44,7 +44,12 @@ public class StringMatcherTests {
 
     @AfterEach
     public void checkIllegalMethods() {
-        IllegalMethodsCheck.checkMethods("^java/lang/Integer valueOf\\(I\\)Ljava/lang/Integer;$");
+        IllegalMethodsCheck.checkMethods(
+            "^java/util/\\w*List add\\(Ljava/lang/Object;\\)Z$",
+            "^java/util/\\w*List add\\(ILjava/lang/Object;\\)V$",
+            "^java/util/List of\\(.*\\)Ljava/util/List;$",
+            "^java/util/Arrays asList\\(\\[Ljava/lang/Object;\\)Ljava/util/List;$"
+        );
     }
 
     @Test
